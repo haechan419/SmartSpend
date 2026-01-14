@@ -6,10 +6,10 @@ import { API_SERVER_HOST } from "../../util/jwtUtil";
 const FaceLogin = ({ onLoginSuccess, onCancel }) => {
   const videoRef = useRef();
 
-  // 🔒 상태 관리
+  // 상태 관리
   const isProcessing = useRef(false);
 
-  // ⏳ [추가] 타임아웃 카운터 (몇 번 검사했는지 센다)
+  // 타임아웃 카운터
   const attemptCount = useRef(0);
   // 최대 시도 횟수 (0.5초 * 20회 = 10초)
   const MAX_ATTEMPTS = 20;
@@ -19,7 +19,7 @@ const FaceLogin = ({ onLoginSuccess, onCancel }) => {
   const [faceMatcher, setFaceMatcher] = useState(null);
   const [userList, setUserList] = useState([]);
 
-  // 1. 초기화
+  // 초기화
   useEffect(() => {
     isProcessing.current = false;
     attemptCount.current = 0; // 카운터 초기화
@@ -72,7 +72,7 @@ const FaceLogin = ({ onLoginSuccess, onCancel }) => {
     };
   }, []);
 
-  // 2. 감지 루프
+  // 감지 루프
   useEffect(() => {
     if (!isModelLoaded || !faceMatcher) return;
 
@@ -84,7 +84,7 @@ const FaceLogin = ({ onLoginSuccess, onCancel }) => {
       )
         return;
 
-      // ⏳ [추가] 타임아웃 체크 로직
+      // 타임아웃 체크 로직
       if (attemptCount.current >= MAX_ATTEMPTS) {
         clearInterval(interval); // 루프 정지
         alert(
@@ -164,12 +164,42 @@ const FaceLogin = ({ onLoginSuccess, onCancel }) => {
           height="225"
           style={{
             borderRadius: "12px",
-            border: "3px solid #4A90E2",
+            //border: "3px solid #4A90E2",
             backgroundColor: "#000",
           }}
         />
+        <div
+          style={{
+            position: "absolute",
+            top: "40%",
+            left: "50%",
+            transform: "translate(-50%, -50%)", // 정중앙 배치
+            width: "180px", // 얼굴 크기에 맞춰 조절
+            height: "160px", // 얼굴 크기에 맞춰 조절
+            border: "3px solid #00ffea", // 형광 하늘색
+            borderRadius: "10px", // 모서리 둥글게
+            boxShadow: "0 0 15px rgba(0, 255, 234, 0.7)", // 야광 효과
+            zIndex: 10,
+            pointerEvents: "none", // 클릭 방해 안 하게 설정
+          }}
+        >
+          <span
+            style={{
+              position: "absolute",
+              top: "-25px",
+              left: "0",
+              color: "#00ffea",
+              fontSize: "12px",
+              fontWeight: "bold",
+              background: "rgba(0,0,0,0.5)",
+              padding: "2px 5px",
+            }}
+          >
+            TARGET LOCKED
+          </span>
+        </div>
+
         <div style={{ marginTop: "5px", fontSize: "12px", color: "#666" }}>
-          {/* 진행 상황을 살짝 보여주면 좋습니다 */}
           {status}
         </div>
 
