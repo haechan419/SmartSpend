@@ -15,7 +15,7 @@
 | **강진수** | • Layout 구현, 알림 기능<br>• 비품 페이지/승인 처리, 장바구니<br>• 얼굴 인식(Face-api.js) 로그인 구현 | [`@kjinsoo12@gmail.com`](Link) |
 | **문주연** | • 업무 보드, 개인/그룹 채팅 구현<br>• 채팅 파일 업/다운로드, 채팅 AI 챗봇<br>• 전체 DB 설계 및 일정 관리 | [`@gsmjy5758@naver.com`](Link) |
 | **성건우** | • 로그인 (Security + JWT)<br>• 사원 페이지 및 출결 기능, 사원 관련 AI 챗봇<br>• 회의록 및 진행 일지 작성 | [`@sgw1358@naver.com`](Link) |
-| **전유진** | • 영수증 OCR 기능 구현<br>• 결재 관리 및 회계 통계<br>• 플로우 차트 통합 제작 | [`@ujyj0414@gmail.com`](Link) |
+| **전유진** | • 영수증 OCR 기능 구현<br>• 결재 관리 및 회계 통계<br>• 플로우 차트 통합 제작 | <a href="https://github.com/ujyj0414-dotcom"><img src="https://github.com/ujyj0414-dotcom.png?size=40" width="40" alt="전유진 프로필"/><br><sub><b>@ujyj0414-dotcom</b></sub></a> |
 [cite_start][cite: 5, 40]
 
 ## 3. 🛠️ 기술 스택 (Tech Stack)
