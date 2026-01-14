@@ -175,6 +175,7 @@ export default function Topbar({ onMenuClick }) {
                                     setChatOpen(true);
                                     setActiveRoomId(null);
                                     setAutoOpenNewChat(true);
+                                    setScrollToMessageId(null);
                                     return;
                                 }
 
