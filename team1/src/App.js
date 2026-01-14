@@ -40,6 +40,7 @@ import AdminShopPage from "./pages/admin/shop/AdminShopPage";
 import AdminApprovalPage from "./pages/admin/AdminApprovalPage";
 import ForbiddenPage from "./pages/ForbiddenPage";
 import AdminLayout from "./components/layout/AdminLayout";
+import ProtectedRoute from "./components/layout/ProtectedRoute";
 import AttendanceManagePage from "./pages/admin/hr/AttendanceManagePage";
 
 // (기존 FloatingUI는 지금 안 쓰면 import 제거해도 됨)
@@ -60,35 +61,47 @@ function AppInner() {
             {/* 페이지 라우팅 */}
             <Routes>
 
-                {/* 진입 시 */}
+                {/* 공개 라우트 */}
                 <Route path="/" element={<LoginPage/>}/>
 
                 {/* 권한이 없고 임의 접속 시 */}
                 <Route path="/forbidden" element={<ForbiddenPage/>}/>
 
-                {/* 일반 사용자용 */}
-                <Route path="/dashboard" element={<DashboardPage/>}/>
+                {/* 로그인 필수 라우트 */}
+                <Route element={<ProtectedRoute/>}>
+                    {/* 일반 사용자용 */}
+                    <Route path="/dashboard" element={<DashboardPage/>}/>
 
-                {/* 내 결재함 */}
-                <Route path="/approval" element={<ReadyPage title="내 결재함/작성"/>}/>
+                    {/* 내 결재함 */}
+                    <Route path="/approval" element={<ReadyPage title="내 결재함/작성"/>}/>
 
-                {/* 쇼핑몰 */}
-                <Route path="/shop" element={<ShopPage/>}/>
+                    {/* 쇼핑몰 */}
+                    <Route path="/shop" element={<ShopPage/>}/>
 
-                {/* 장바구니 (페이지 버전 유지) */}
-                <Route path="/cart" element={<ReadyPage title="내 지출 내역"/>}/>
+                    {/* 장바구니 (페이지 버전 유지) */}
+                    <Route path="/cart" element={<ReadyPage title="내 지출 내역"/>}/>
 
-                {/* 마이페이지 */}
-                <Route path="/mypage" element={<MypagePage title="마이페이지"/>}/>
+                    {/* 마이페이지 */}
+                    <Route path="/mypage" element={<MypagePage title="마이페이지"/>}/>
 
-                {/* 내 지출 내역 */}
-                <Route path="/expenses" element={<FinanceListPage/>}/>
-                <Route path="/expenses/new" element={<ExpenseAddPage/>}/>
-                <Route path="/expenses/:id" element={<ExpenseDetailPage/>}/>
-                <Route path="/receipt/receipts/:id" element={<ReceiptDetailPage/>}/>
+                    {/* 내 지출 내역 */}
+                    <Route path="/expenses" element={<FinanceListPage/>}/>
+                    <Route path="/expenses/new" element={<ExpenseAddPage/>}/>
+                    <Route path="/expenses/:id" element={<ExpenseDetailPage/>}/>
+                    <Route path="/receipt/receipts/:id" element={<ReceiptDetailPage/>}/>
 
-                {/* 내 업무 */}
-                <Route path="/tasks" element={<ReportAnalyticsPage1/>}/>
+                    {/* 내 업무 */}
+                    <Route path="/tasks" element={<ReportAnalyticsPage1/>}/>
+
+                    {/* 내 결재함(주문 내역 확인) */}
+                    <Route path="/history" element={<RequestHistoryPage/>}/>
+
+                    {/* 기존 경로 호환성 유지 */}
+                    <Route path="/receipt/expenses" element={<FinanceListPage/>}/>
+                    <Route path="/receipt/expenses/new" element={<ExpenseAddPage/>}/>
+                    <Route path="/receipt/expenses/:id/edit" element={<ExpenseAddPage/>}/>
+                    <Route path="/receipt/expenses/:id" element={<ExpenseDetailPage/>}/>
+                </Route>
 
                 {/* ---------------------------------------- */}
                 {/* 관리자 전용 (URL: /admin/...) */}
@@ -130,14 +143,6 @@ function AppInner() {
 
 
 
-                {/* 내 결재함(주문 내역 확인) */}
-                <Route path="/history" element={<RequestHistoryPage/>}/>
-
-                {/* 기존 경로 호환성 유지 */}
-                <Route path="/receipt/expenses" element={<FinanceListPage/>}/>
-                <Route path="/receipt/expenses/new" element={<ExpenseAddPage/>}/>
-                <Route path="/receipt/expenses/:id/edit" element={<ExpenseAddPage/>}/>
-                <Route path="/receipt/expenses/:id" element={<ExpenseDetailPage/>}/>
 
             </Routes>
 
