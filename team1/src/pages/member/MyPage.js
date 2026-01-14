@@ -1,9 +1,8 @@
 // src/pages/member/MyPage.js
 
 import React from "react";
-import FaceRegister from "../../components/face/FaceRegister";
 // 👇 1. 우리가 만든 컴포넌트 불러오기
-
+import FaceRegister from "../../components/member/FaceRegister";
 
 const MyPage = () => {
   return (

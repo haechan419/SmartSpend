@@ -95,25 +95,8 @@ export default function NewChatModal({ open, onClose, onCreated }) {
                 setResults(normalized);
             } catch (e) {
                 if (!open || reqSeqRef.current !== mySeq) return;
-                // 에러 객체가 유효한지 확인 후 안전하게 로깅
-                try {
-                    if (e && typeof e === 'object') {
-                        // 에러 정보를 안전하게 추출하여 로깅
-                        const errorInfo = {
-                            status: e?.response?.status,
-                            data: e?.response?.data,
-                            message: e?.message,
-                            name: e?.name,
-                        };
-                        console.error("[SEARCH] error", errorInfo);
-                    } else {
-                        console.error("[SEARCH] error", e || "알 수 없는 에러");
-                    }
-                } catch (logError) {
-                    // console.error 자체가 실패하는 경우를 대비
-                    console.error("[SEARCH] error - 로깅 실패:", String(e));
-                }
-                setErr(e?.response?.data?.message || e?.message || "검색 실패");
+                console.error("[SEARCH] error", e?.response?.status, e?.response?.data, e);
+                setErr(e?.response?.data?.message || e.message || "검색 실패");
                 setResults([]);
             }
         }, 250);
@@ -165,24 +148,7 @@ export default function NewChatModal({ open, onClose, onCreated }) {
             onClose?.(); // 모달 닫기
         } catch (e) {
             // 🔥 여기서 status / response 바디를 반드시 본다
-            // 에러 객체가 유효한지 확인 후 안전하게 로깅
-            try {
-                if (e && typeof e === 'object') {
-                    // 에러 정보를 안전하게 추출하여 로깅
-                    const errorInfo = {
-                        status: e?.response?.status,
-                        data: e?.response?.data,
-                        message: e?.message,
-                        name: e?.name,
-                    };
-                    console.error("[START] API error", errorInfo);
-                } else {
-                    console.error("[START] API error", e || "알 수 없는 에러");
-                }
-            } catch (logError) {
-                // console.error 자체가 실패하는 경우를 대비
-                console.error("[START] API error - 로깅 실패:", String(e));
-            }
+            console.error("[START] API error", e?.response?.status, e?.response?.data, e);
 
             const status = e?.response?.status;
             const msg =

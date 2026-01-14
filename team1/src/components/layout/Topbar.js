@@ -1,18 +1,17 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import useCustomLogin from "../../hooks/useCustomLogin";
-import { useFloatingAI } from "../../context/FloatingAIContext";
 import "../../styles/layout.css";
 import NotificationBell from "../common/NotificationBell";
 import ChatDrawer from "../chat/ChatDrawer";
 import { chatApi } from "../../api/chatApi";
-import FloatingAI from "../../pages/FloatingAI"; //
 
+// ✅ B안: Topbar에서는 FloatingAI 렌더 X (AppInner 전역 FloatingAI가 이벤트만 쏨)
+// import FloatingAI from "../../pages/FloatingAI";
 
-export default function Topbar({ onMenuClick }) {
+export default function Topbar() {
     const navigate = useNavigate();
     const { loginState, doLogout } = useCustomLogin();
-    const { setOpen: openAI } = useFloatingAI();
 
     const [chatOpen, setChatOpen] = useState(false);
     const [activeRoomId, setActiveRoomId] = useState(null);
@@ -96,55 +95,29 @@ export default function Topbar({ onMenuClick }) {
     return (
         <>
             <header className="topbar">
-                <div className="topbar-left">
-                    {/* 햄버거 메뉴 버튼 (모바일) */}
-                    <button
-                        className="hamburger-btn"
-                        onClick={onMenuClick}
-                        aria-label="Toggle menu"
-                        title="메뉴"
-                        type="button"
-                    >
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </button>
-                    <button
-                        className="ai-topbar-btn"
-                        onClick={() => openAI(true)}
-                        aria-label="Open AI assistant"
-                        title="AI Assistant"
-                        type="button"
-                    >
-                        AI
-                    </button>
-                </div>
-
+                <div className="topbar-left"></div>
 
                 <div className="topbar-right">
-          <div className="user-profile">
-            <div className="avatar-circle">
-              {loginState?.thumbnailUrl || loginState?.profileImageUrl ? (
-                <img
-                  src={`http://localhost:8080${
-                    loginState.thumbnailUrl || loginState.profileImageUrl
-                  }`}
-                  alt="프로필 이미지"
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "cover",
-                  }}
-                />
+                    <div className="user-profile">
+                        <div className="avatar-circle">
+                            {loginState?.thumbnailUrl || loginState?.profileImageUrl ? (
+                                <img
+                                    src={`http://localhost:8080${
+                                        loginState.thumbnailUrl || loginState.profileImageUrl
+                                    }`}
+                                    alt="프로필 이미지"
+                                    style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                                />
                             ) : (
                                 <span style={{ fontSize: "18px" }}>👤</span>
                             )}
-
                         </div>
 
                         <div className="user-info">
                             <div className="user-name">{loginState.name || "사용자"}님</div>
-                            <div className="user-dept">{loginState.departmentName || "부서없음"}</div>
+                            <div className="user-dept">
+                                {loginState.departmentName || "부서없음"}
+                            </div>
                         </div>
                     </div>
 
@@ -161,7 +134,7 @@ export default function Topbar({ onMenuClick }) {
                         <button
                             className="topIconBtn"
                             onClick={async () => {
-                                // ✅ 채팅창 열려있으면 팝오버는 안 띄우고 닫기만
+                                // ✅ 채팅창 열려있으면 팝오버는 닫기만
                                 if (chatOpen) {
                                     setRoomsOpen(false);
                                     return;
@@ -169,16 +142,16 @@ export default function Topbar({ onMenuClick }) {
 
                                 const list = await loadRooms();
 
-                                // ✅ rooms가 0이면: 팝오버 대신 "바로 채팅창 + NewChatModal"
+                                // ✅ rooms 0: 팝오버 대신 "바로 채팅창 + NewChatModal"
                                 if (list.length === 0) {
                                     setRoomsOpen(false);
                                     setChatOpen(true);
                                     setActiveRoomId(null);
                                     setAutoOpenNewChat(true);
+                                    setScrollToMessageId(null);
                                     return;
                                 }
 
-                                // rooms가 있으면: 팝오버 토글
                                 setAutoOpenNewChat(false);
                                 setRoomsOpen((v) => !v);
                             }}
@@ -216,21 +189,9 @@ export default function Topbar({ onMenuClick }) {
                     </div>
                 </div>
             </header>
-            
-             {/*한해찬*/}
-            <FloatingAI
-                roomId={activeRoomId}
-                onOpenRoom={(rid) => {
-                    setActiveRoomId(String(rid));
-                    setChatOpen(true);
-                    setRoomsOpen(false);
-                    setAutoOpenNewChat(false);
-                }}
-            />
 
             {/* ✅ B안: Topbar에서는 FloatingAI 렌더 X */}
             {/* <FloatingAI onOpenRoom={handleOpenRoom} /> */}
-
 
             <ChatDrawer
                 open={chatOpen}

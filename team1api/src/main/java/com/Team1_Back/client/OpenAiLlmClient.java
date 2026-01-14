@@ -90,7 +90,6 @@ public class OpenAiLlmClient {
     }
 
     private LlmResult parseJson(String text) throws Exception {
-        // ```json 제거
         String cleaned = text
                 .replaceAll("(?s)```json\\s*", "")
                 .replaceAll("(?s)```\\s*", "")

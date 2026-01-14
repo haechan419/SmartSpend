@@ -380,7 +380,7 @@ export default function FloatingAI({ roomId, onOpenRoom }) {
     return (
         <>
             {/* ✅ 항상 떠있는 AI 버튼(FAB) */}
-            {/*<button
+            <button
                 className="ai-fab"
                 type="button"
                 aria-label="Open AI assistant"
@@ -389,7 +389,7 @@ export default function FloatingAI({ roomId, onOpenRoom }) {
             >
                 AI
             </button>
-*/}
+
             {/* ✅ open일 때만 패널/오버레이 렌더 */}
             {open && (
                 <div className="ai-overlay" onMouseDown={() => setOpen(false)}>
