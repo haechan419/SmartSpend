@@ -17,4 +17,9 @@
 ---
 
 ## 2. 핵심 코드 (Core Code)
-
+======== 파일 검색 ======== <br>
+<img width="723" height="206" alt="image" src="https://github.com/user-attachments/assets/c5cf32ac-3e1b-4bd1-aa73-b11666849832" /><br>
+<img width="695" height="499" alt="image" src="https://github.com/user-attachments/assets/a624c617-82d8-490e-aec3-d1e03f687ff2" /><br>
+======== 채팅 ========<br>
+<img width="821" height="429" alt="image" src="https://github.com/user-attachments/assets/52dfa17e-558d-43c1-ba47-f6b61e3de10f" /><br>
+<img width="693" height="340" alt="image" src="https://github.com/user-attachments/assets/e56c3d87-228b-43e7-b3e9-dc7bab4e4afe" /><br>
