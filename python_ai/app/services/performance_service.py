@@ -3,7 +3,7 @@
 - DB에서 실적 데이터 조회
 - AI로 질문 분석 (부서명, 연도 추출)
 - 그래프 생성 (Base64 이미지)
-- AI 인사이트 분석 추가 ⭐
+- AI 인사이트 분석 추가
 """
 import pymysql
 import matplotlib
@@ -13,15 +13,15 @@ import matplotlib.font_manager as fm
 import io
 import base64
 import re
-import json          # ⭐ 추가
-import requests      # ⭐ 추가
+import json          # 추가
+import requests      # 추가
 from datetime import datetime
 from typing import Optional, List, Dict, Any
 
 class PerformanceService:
     def __init__(self, ollama_service=None):
         self.ollama = ollama_service
-        self.ollama_url = "http://localhost:11434"  # ⭐ 추가
+        self.ollama_url = "http://localhost:11434"  # 추가
         self.db_config = {
             'host': 'localhost',
             'port': 3306,
@@ -155,7 +155,7 @@ class PerformanceService:
         try:
             print(f"[DB] 연결 시도: {self.db_config['host']}:{self.db_config['port']} (DB: {self.db_config['database']})")
             conn = pymysql.connect(**self.db_config)
-            print(f"[DB] ✅ 연결 성공!")
+            print(f"[DB] 연결 성공!")
             
             with conn.cursor(pymysql.cursors.DictCursor) as cursor:
                 placeholders = ','.join(['%s'] * len(departments))
@@ -169,7 +169,7 @@ class PerformanceService:
                 """
                 cursor.execute(sql, (*departments, year))
                 result = cursor.fetchall()
-                print(f"[DB] ✅ 조회 성공: {len(result)}건")
+                print(f"[DB] 조회 성공: {len(result)}건")
                 return result
         except pymysql.OperationalError as e:
             error_code = e.args[0] if e.args else None
@@ -203,10 +203,10 @@ class PerformanceService:
     
     def _generate_summary(self, data: List[Dict], departments: List[str], year: int) -> str:
         """실적 요약 텍스트 생성 (AI 인사이트 포함)"""
-        summary_lines = [f"📊 {year}년 부서별 실적 비교\n"]
+        summary_lines = [f" {year}년 부서별 실적 비교\n"]
         summary_lines.append("=" * 40)
         
-        dept_stats = {}  # ⭐ AI 분석용 데이터 저장
+        dept_stats = {}  # AI 분석용 데이터 저장
         
         # 각 부서 통계 계산
         for dept in departments:
@@ -218,14 +218,14 @@ class PerformanceService:
             total_contracts = sum(d['contract_count'] for d in dept_data)
             avg_rate = sum(float(d['target_achievement_rate'] or 0) for d in dept_data) / len(dept_data)
             
-            # ⭐ AI 분석용 데이터 저장
+            # AI 분석용 데이터 저장
             dept_stats[dept] = {
                 "매출": total_sales,
                 "계약": total_contracts,
                 "목표달성률": round(avg_rate, 1)
             }
             
-            summary_lines.append(f"\n🏢 {dept}")
+            summary_lines.append(f"\n {dept}")
             summary_lines.append(f"   총 매출: {total_sales:,}원 ({total_sales/100000000:.1f}억)")
             summary_lines.append(f"   총 계약: {total_contracts}건")
             summary_lines.append(f"   평균 목표달성률: {avg_rate:.1f}%")
@@ -233,20 +233,20 @@ class PerformanceService:
         # 기본 비교 분석 (2개 이상일 때)
         if len(departments) >= 2:
             summary_lines.append("\n" + "=" * 40)
-            summary_lines.append("\n📈 기본 비교")
+            summary_lines.append("\n 기본 비교")
             
             dept_totals = {dept: dept_stats[dept]["매출"] for dept in departments if dept in dept_stats}
             sorted_depts = sorted(dept_totals.items(), key=lambda x: x[1], reverse=True)
             
-            summary_lines.append(f"   🥇 매출 1위: {sorted_depts[0][0]} ({sorted_depts[0][1]/100000000:.1f}억)")
+            summary_lines.append(f"   매출 1위: {sorted_depts[0][0]} ({sorted_depts[0][1]/100000000:.1f}억)")
             if len(sorted_depts) > 1:
                 diff = sorted_depts[0][1] - sorted_depts[1][1]
-                summary_lines.append(f"   📊 1위-2위 차이: {diff:,}원 ({diff/10000:.0f}만원)")
+                summary_lines.append(f"   1위-2위 차이: {diff:,}원 ({diff/10000:.0f}만원)")
         
-        # ⭐⭐⭐ AI 인사이트 추가 (2개 이상 부서일 때) ⭐⭐⭐
+        #  AI 인사이트 추가 (2개 이상 부서일 때)
         if len(dept_stats) >= 2:
             summary_lines.append("\n" + "=" * 40)
-            summary_lines.append("\n🤖 AI 인사이트 분석\n")
+            summary_lines.append("\n AI 인사이트 분석\n")
             
             ai_insight = self._get_ai_insight(dept_stats, year)
             summary_lines.append(ai_insight)
@@ -254,7 +254,7 @@ class PerformanceService:
         return "\n".join(summary_lines)
     
     def _get_ai_insight(self, dept_stats: dict, year: int) -> str:
-        """AI에게 인사이트 분석 요청 ⭐ 새로 추가된 메서드"""
+        """AI에게 인사이트 분석 요청  새로 추가된 메서드"""
         print(f"[AI Insight] 분석 요청 시작...")
         
         try:
@@ -289,17 +289,17 @@ class PerformanceService:
             if response.status_code == 200:
                 result = response.json()
                 ai_response = result.get("response", "")
-                print(f"[AI Insight] ✅ 분석 완료")
+                print(f"[AI Insight]  분석 완료")
                 return ai_response.strip()
             else:
-                print(f"[AI Insight] ❌ 요청 실패: {response.status_code}")
+                print(f"[AI Insight]  요청 실패: {response.status_code}")
                 return "AI 분석을 가져올 수 없습니다."
                 
         except requests.exceptions.ConnectionError:
-            print(f"[AI Insight] ❌ Ollama 서버 연결 실패 ({self.ollama_url})")
+            print(f"[AI Insight]  Ollama 서버 연결 실패 ({self.ollama_url})")
             return "AI 서버에 연결할 수 없습니다. Ollama가 실행 중인지 확인하세요."
         except Exception as e:
-            print(f"[AI Insight] ❌ 오류: {e}")
+            print(f"[AI Insight]  오류: {e}")
             return f"AI 분석 중 오류가 발생했습니다: {str(e)}"
     
     def _generate_chart(self, data: List[Dict], departments: List[str], 
